@@ -143,13 +143,46 @@ app.get('/api/themes/:themeID/creations', async (req, res) => {
   try {
     let theme = await Theme.findOne({_id: req.params.themeID});
     if (!theme) {
-      res.sendStatus(404);
+      res.send(404);
       return;
     }
     let creations = await Creation.find({theme: theme});
     res.send(creations);
-  } catch (errror) {
+  } catch (error) {
     console.log(error)
+    res.sendStatus(500);
+  }
+});
+
+app.put('/api/themes/:themeID/creations/:creationID', async (req, res) => {
+  try {
+    let creation = await Creation.findOne({_id: req.params.creationID});
+    if (!creation) {
+      res.send(404);
+      return;
+    }
+    creation.name = req.body.name;
+    creation.description = req.body.description;
+    creation.instagramLink = req.body.instagramLink;
+    await creation.save();
+    res.send(creation);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+app.delete('/api/themes/:themeID/creations/:creationID', async (req, res) => {
+  try {
+    let creation = await Creation.findOne({_id: req.params.creationID});
+    if (!creation) {
+      res.send(404);
+      return;
+    }
+    await creation.delete();
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
     res.sendStatus(500);
   }
 });
