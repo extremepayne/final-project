@@ -41,4 +41,14 @@ app.post('/api/themes', async (req, res) => {
   }
 });
 
+app.get('/api/themes', async (req, res) => {
+  try {
+    let themes = await Theme.find();
+    res.send(themes);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 app.listen(3000, () => console.log('Server listening on port 3000!'));
