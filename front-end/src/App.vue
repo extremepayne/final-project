@@ -23,7 +23,7 @@
     </main>
     <footer class="footer">
       <div class="container">
-        <a target="_blank" href="https://github.com/extremepayne/learn-vim-org">Code for this website</a>
+        <a target="_blank" href="https://github.com/extremepayne/lego-photo-website">Code for this website</a>
       </div>
     </footer>
   </div>
