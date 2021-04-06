@@ -1,8 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const multer = require('multer')
 
 const app = express();
+
+// Configure multer so that it will upload to '../front-end/public/images'
+const upload = multer({
+  dest: '../front-end/public/images/',
+  limits: {
+    fileSize: 10000000
+  }
+});
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
@@ -24,7 +33,31 @@ const themeSchema = new mongoose.Schema({
   color: String
 });
 
+const creationSchema = new mongoose.Schema({
+  name: String,
+  description: String,
+  photos: Array,
+  instagramLink: String,
+  theme: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Theme'
+  }
+});
+
 const Theme = mongoose.model('Theme', themeSchema);
+const Creation = mongoose.model('Creation', creationSchema);
+
+// Upload a photo. Uses the multer middleware for the upload and then returns
+// the path where the photo is stored in the file system.
+app.post('/api/photos', upload.single('photo'), async (req, res) => {
+  // Just a safety check
+  if (!req.file) {
+    return res.sendStatus(400);
+  }
+  res.send({
+    path: "/images/" + req.file.filename
+  });
+});
 
 app.post('/api/themes', async (req, res) => {
   const theme = new Theme({
@@ -80,6 +113,43 @@ app.delete('api/themes/:themeID', async (req, res) => {
     res.sendStatus(200);
   } catch (error) {
     console.lo(error);
+    res.sendStatus(500);
+  }
+});
+
+app.post('api/themes/:themeID/creations', async (req, res) => {
+  try {
+    let theme = await Theme.findOne({_id: req.params.themeID});
+    if (!project){
+      res.sendStatus(404);
+      return;
+    }
+    let creation = new Creation({
+      theme: theme,
+      name: req.body.name,
+      description: req.body.description,
+      photos: req.body.photos,
+      instagramLink: req.body.instagramLink
+    });
+    await creation.save();
+    res.send(creation);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+app.get('/api/themes/:themeID/creations', async (req, res) => {
+  try {
+    let theme = await Theme.findOne({_id: req.params.themeID});
+    if (!theme) {
+      res.sendStatus(404);
+      return;
+    }
+    let creations = await Creation.find({theme: theme});
+    res.send(creations);
+  } catch (errror) {
+    console.log(error)
     res.sendStatus(500);
   }
 });
