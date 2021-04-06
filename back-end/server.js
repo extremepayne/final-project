@@ -51,4 +51,22 @@ app.get('/api/themes', async (req, res) => {
   }
 });
 
+app.put('api/themes/:themeID', async (req, res) => {
+  try {
+    let theme = await Theme.findOne({_id:req.params.themeID});
+    if (!theme) {
+      res.send(404);
+      return;
+    }
+    theme.name = req.body.name;
+    theme.description = req.body.description;
+    theme.color = req.body.color;
+    await theme.save();
+    res.send(theme);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 app.listen(3000, () => console.log('Server listening on port 3000!'));
