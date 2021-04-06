@@ -69,4 +69,19 @@ app.put('api/themes/:themeID', async (req, res) => {
   }
 });
 
+app.delete('api/themes/:themeID', async (req, res) => {
+  try {
+    let theme = await Theme.findOne({_id:req.params.themeID});
+    if (!theme) {
+      res.send(404);
+      return;
+    }
+    await theme.delete();
+    res.sendStatus(200);
+  } catch (error) {
+    console.lo(error);
+    res.sendStatus(500);
+  }
+});
+
 app.listen(3000, () => console.log('Server listening on port 3000!'));
