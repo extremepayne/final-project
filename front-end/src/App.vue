@@ -8,11 +8,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item">
+            <li v-bind:class="{ active: this.$router.history.current.path == '/'}" class="nav-item">
               <router-link class="nav-link" to="/">Home</router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/about">About</router-link>
+            <li v-bind:class="{ active: this.$router.history.current.path == '/about'}" class="nav-item">
+              <router-link class="nav-link" to="/admin">Admin</router-link>
             </li>
           </ul>
         </div>
@@ -28,6 +28,10 @@
     </footer>
   </div>
 </template>
+
+<script>
+
+</script>
 
 <style>
 #app {
@@ -88,6 +92,23 @@ body {
 @media only screen and (min-width: 992px){
   .navbar {
     max-width: 960px;
+  }
+  .navbar-brand {
+    padding: .5rem 1rem;
+  }
+  .nav-link {
+    padding: .75rem 1rem;
+  }
+  .nav-item {
+    padding: 0;
+  }
+  .navbar {
+    padding: 0 !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .nav-link:hover {
+    background-color: #2c3e50 !important;
   }
 }
 @media only screen and (min-width: 1200px){
