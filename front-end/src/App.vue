@@ -11,6 +11,15 @@
             <li v-bind:class="{ active: this.$router.history.current.path == '/'}" class="nav-item">
               <router-link class="nav-link" to="/">Home</router-link>
             </li>
+            <li v-bind:class="{ active: this.$router.history.current.path == '/stormlight'}" class="nav-item">
+              <router-link class="nav-link" to="/stormlight">Stormlight</router-link>
+            </li>
+            <li v-bind:class="{ active: this.$router.history.current.path == '/starwars'}" class="nav-item">
+              <router-link class="nav-link" to="/starwars">Star Wars</router-link>
+            </li>
+            <li v-bind:class="{ active: this.$router.history.current.path == '/other'}" class="nav-item">
+              <router-link class="nav-link" to="/other">Other</router-link>
+            </li>
             <li v-bind:class="{ active: this.$router.history.current.path == '/admin'}" class="nav-item">
               <router-link class="nav-link" to="/admin">Admin</router-link>
             </li>

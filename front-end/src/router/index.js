@@ -2,6 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
+import Stormlight from "../views/Stormlight.vue";
+import StarWars from "../views/StarWars.vue";
+import Other from "../views/Other.vue";
 
 Vue.use(VueRouter);
 
@@ -15,6 +18,21 @@ const routes = [
     path: "/admin",
     name: "Admin",
     component: Admin,
+  },
+  {
+    path: "/stormlight",
+    name: "Stormlight",
+    component: Stormlight,
+  },
+  {
+    path: "/starwars",
+    name: "Star Wars",
+    component: StarWars,
+  },
+  {
+    path: "/other",
+    name: "Other",
+    component: Other,
   },
 ];
 
