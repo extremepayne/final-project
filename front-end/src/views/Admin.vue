@@ -30,7 +30,7 @@ export default {
   methods: {
     async createTheme() {
       try {
-        await axios.post('api/items', {
+        await axios.post('/api/themes', {
           name: this.name,
           description: this.description,
           color: this.color,
