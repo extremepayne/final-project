@@ -11,7 +11,7 @@
             <li v-bind:class="{ active: this.$router.history.current.path == '/'}" class="nav-item">
               <router-link class="nav-link" to="/">Home</router-link>
             </li>
-            <li v-bind:class="{ active: this.$router.history.current.path == '/about'}" class="nav-item">
+            <li v-bind:class="{ active: this.$router.history.current.path == '/admin'}" class="nav-item">
               <router-link class="nav-link" to="/admin">Admin</router-link>
             </li>
           </ul>
