@@ -84,7 +84,7 @@ app.get('/api/themes', async (req, res) => {
   }
 });
 
-app.put('api/themes/:themeID', async (req, res) => {
+app.put('/api/themes/:themeID', async (req, res) => {
   try {
     let theme = await Theme.findOne({_id:req.params.themeID});
     if (!theme) {
@@ -102,7 +102,7 @@ app.put('api/themes/:themeID', async (req, res) => {
   }
 });
 
-app.delete('api/themes/:themeID', async (req, res) => {
+app.delete('/api/themes/:themeID', async (req, res) => {
   try {
     let theme = await Theme.findOne({_id:req.params.themeID});
     if (!theme) {
@@ -117,7 +117,7 @@ app.delete('api/themes/:themeID', async (req, res) => {
   }
 });
 
-app.post('api/themes/:themeID/creations', async (req, res) => {
+app.post('/api/themes/:themeID/creations', async (req, res) => {
   try {
     let theme = await Theme.findOne({_id: req.params.themeID});
     if (!project){
