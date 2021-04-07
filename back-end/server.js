@@ -9,7 +9,7 @@ const app = express();
 const upload = multer({
   dest: '../front-end/public/images/',
   limits: {
-    fileSize: 10000000
+    fileSize: 100000000
   }
 });
 
