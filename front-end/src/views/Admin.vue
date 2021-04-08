@@ -13,7 +13,7 @@
         <button @click="createTheme">Create</button>
       </div>
     </div>
-    <h2>Edit/Delete an Theme</h2>
+    <h2>Edit/Delete a Theme</h2>
     <div class="edit">
       <div class="form">
         <input v-model="findName" placeholder="Search">
@@ -34,7 +34,7 @@
         <button @click="editTheme(findTheme)">Edit</button>
       </div>
       <div v-if="findTheme">
-        <h2>Add a creation</h2>
+        <h2>Add a creation to {{findTheme.name}}</h2>
         <div class="form">
           <input v-model="creationName" placeholder="Name">
           <p></p>
@@ -46,6 +46,23 @@
           <p></p>
           <button @click="createCreation">Create</button>
         </div>
+      </div>
+      <h2>Edit/Delete a Creation</h2>
+      <input v-model="findCreationName" placeholder="Search">
+      <div class="suggestions" v-if="creationSuggestions.length > 0">
+        <div class="suggestion" v-for="s in creationSuggestions" :key="s.id" @click="selectCreation(s)">{{s.name}}
+        </div>
+      </div>
+      <div v-if="findCreation">
+        <input v-model="findCreation.name">
+        <p></p>
+        <input v-model="findCreation.description">
+        <p></p>
+        <input v-model="findCreation.instagramLink">
+      </div>
+      <div class="actions" v-if="findCreation">
+        <button @click="deleteCreation(findCreation)">Delete</button>
+        <button @click="editCreation(findCreation)">Edit</button>
       </div>
     </div>
   </div>
@@ -82,19 +99,27 @@ export default {
       creationDescription: "",
       color: "",
       themes: [],
+      creations: [],
       addTheme: null,
       findName: "",
       findTheme: null,
+      findCreationName: "",
+      findCreation: null,
       file: null,
     }
   },
   created() {
     this.getThemes();
+    this.getCreations();
   },
   computed: {
     suggestions() {
       let themes = this.themes.filter(theme => theme.name.toLowerCase().startsWith(this.findName.toLowerCase()));
       return themes.sort((a, b) => a.name > b.name);
+    },
+    creationSuggestions() {
+      let creations = this.creations.filter(creation => creation.name.toLowerCase().startsWith(this.findCreationName.toLowerCase()));
+      return creations.sort((a, b) => a.name > b.name);
     }
   },
   methods: {
@@ -120,6 +145,11 @@ export default {
           instagramLink: this.instagramLink,
           photos: [r1.data.path],
         });
+        this.getCreations();
+        this.creationName = "";
+        this.creationDescription = "";
+        this.instagramLink = "";
+        this.file = null;
       } catch (error) {
         console.log(error)
       }
@@ -133,15 +163,38 @@ export default {
         console.log(error);
       }
     },
-    selectTheme(item) {
+    async getCreations() {
+      try{
+        let r1 = await axios.get("/api/creations/");
+        this.creations = r1.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    selectTheme(theme) {
       this.findName = "";
-      this.findTheme = item;
+      this.findTheme = theme;
+    },
+    selectCreation(creation) {
+      this.findCreationName = "";
+      this.findCreation = creation;
     },
     async deleteTheme(theme) {
       try {
         await axios.delete("/api/themes/" + theme._id);
         this.findTheme = null;
         this.getThemes();
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteCreation(creation) {
+      try {
+        await axios.delete("/api/themes/" + creation.theme + "/creations/" + creation._id);
+        this.findCreation = null;
+        this.getCreations();
         return true;
       } catch (error) {
         console.log(error);
@@ -159,6 +212,20 @@ export default {
         });
         this.findTheme = null;
         this.getThemes();
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async editCreation(creation) {
+      try {
+        await axios.put("/api/themes/" + creation.theme + "/creations/" + creation._id, {
+          name: this.findCreation.name,
+          description: this.findCreation.description,
+          instagramLink: this.findCreation.instagramLink,
+        });
+        this.findCreation = null;
+        this.getCreations();
         return true;
       } catch (error) {
         console.log(error);

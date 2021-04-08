@@ -154,6 +154,16 @@ app.get('/api/themes/:themeID/creations', async (req, res) => {
   }
 });
 
+app.get('/api/creations', async (req, res) => {
+  try {
+    let creations = await Creation.find();
+    res.send(creations);
+  } catch (error) {
+    console.log(error)
+    res.sendStatus(500);
+  }
+});
+
 app.put('/api/themes/:themeID/creations/:creationID', async (req, res) => {
   try {
     let creation = await Creation.findOne({_id: req.params.creationID});
