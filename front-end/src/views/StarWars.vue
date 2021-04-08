@@ -2,13 +2,21 @@
   <div class="starwars">
      <h1 v-bind:style="{ color: headingColor }">Star Wars</h1>
      <p>{{ description }}</p>
+     <div v-for="creation in creations" :key="creation._id">
+       <CreationDisplay :creation="creation" />
+     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import CreationDisplay from "@/components/CreationDisplay.vue";
+
 export default {
   name: "Star Wars",
+  components: {
+    CreationDisplay,
+  },
   data() {
     return{
       creations: [],
