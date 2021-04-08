@@ -79,7 +79,7 @@ html {
   position: relative;
   min-height: 100%;
 }
-body {
+main {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }

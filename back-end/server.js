@@ -120,7 +120,7 @@ app.delete('/api/themes/:themeID', async (req, res) => {
 app.post('/api/themes/:themeID/creations', async (req, res) => {
   try {
     let theme = await Theme.findOne({_id: req.params.themeID});
-    if (!project){
+    if (!theme){
       res.sendStatus(404);
       return;
     }
