@@ -60,6 +60,9 @@
         <p></p>
         <input v-model="findCreation.instagramLink">
       </div>
+      <div class="image-preview-div" v-if="findCreation">
+        <img class="img-fluid preview-image" :src="findCreation.photos[0]">
+      </div>
       <div class="actions" v-if="findCreation">
         <button @click="deleteCreation(findCreation)">Delete</button>
         <button @click="editCreation(findCreation)">Edit</button>
@@ -83,6 +86,11 @@
 .suggestion:hover {
   background-color: #5BDEFF;
   color: #fff;
+}
+
+img.preview-image {
+  width: 50%;
+  padding: 10px;
 }
 </style>
 

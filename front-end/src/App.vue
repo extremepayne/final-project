@@ -1,31 +1,30 @@
 <template>
   <div id="app">
     <header>
-      <nav class="navbar navbar-expand-md navbar-dark bg-primary">
-        <router-link class="navbar-brand" to="/">extremepayne</router-link>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li v-bind:class="{ active: this.$router.history.current.path == '/'}" class="nav-item">
+      <b-navbar toggleable="lg" type="dark" variant="primary">
+        <b-navbar-brand href="/">
+          <img class="navbar-icon-image" width="30" height= "30" src="/other-images/Szeth-portrait.jpg"/>extremepayne</b-navbar-brand>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav>
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/'}">
               <router-link class="nav-link" to="/">Home</router-link>
-            </li>
-            <li v-bind:class="{ active: this.$router.history.current.path == '/stormlight'}" class="nav-item">
+            </b-nav-item>
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/stormlight'}">
               <router-link class="nav-link" to="/stormlight">Stormlight</router-link>
-            </li>
-            <li v-bind:class="{ active: this.$router.history.current.path == '/starwars'}" class="nav-item">
+            </b-nav-item>
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/starwars'}">
               <router-link class="nav-link" to="/starwars">Star Wars</router-link>
-            </li>
-            <li v-bind:class="{ active: this.$router.history.current.path == '/other'}" class="nav-item">
+            </b-nav-item>
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/other'}">
               <router-link class="nav-link" to="/other">Other</router-link>
-            </li>
-            <li v-bind:class="{ active: this.$router.history.current.path == '/admin'}" class="nav-item">
+            </b-nav-item>
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/admin'}">
               <router-link class="nav-link" to="/admin">Admin</router-link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+            </b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
     </header>
     <main role="main" class="container">
       <router-view />
@@ -58,6 +57,11 @@ nav.bg-primary, header {
 nav {
   margin-right: auto;
   margin-left: auto;
+}
+
+.navbar-icon-image {
+  border-radius: 7px;
+  margin: 0 .5rem;
 }
 
 #nav {
