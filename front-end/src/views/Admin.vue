@@ -138,6 +138,7 @@ export default {
           description: this.themeDescription,
           color: this.color,
         });
+        this.getThemes();
       } catch (error) {
         console.log(error)
       }
