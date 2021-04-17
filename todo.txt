@@ -1,0 +1,3 @@
+ - gate POST, PUT and DELETE to admins
+ - build out front-end login screen
+ - add comment functionality

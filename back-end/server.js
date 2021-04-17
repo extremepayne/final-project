@@ -22,10 +22,23 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // connect to the database
-mongoose.connect('mongodb://localhost:27017/todo', {
+mongoose.connect('mongodb://localhost:27017/final-project', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
+
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
+const cookieSession = require("cookie-session");
+app.use(cookieSession({
+  name: "session",
+  keys: ["secretValue"],
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}));
+
 
 const themeSchema = new mongoose.Schema({
   name: String,
@@ -196,5 +209,8 @@ app.delete('/api/themes/:themeID/creations/:creationID', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+const users = require("./users.js");
+app.use("/api/users", users.routes);
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));
