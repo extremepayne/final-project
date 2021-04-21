@@ -1,72 +1,77 @@
 <template>
   <div class="about">
-    <h1>Admin page</h1>
-    <h2>Add a theme</h2>
-    <div>
-      <div class="form">
-        <input v-model="themeName" placeholder="Name">
-        <p></p>
-        <input v-model="themeDescription" placeholder="Description">
-        <p></p>
-        <input v-model="color" placeholder="Hex of color">
-        <p></p>
-        <button @click="createTheme">Create</button>
+    <div v-if="user && user.role === 'admin'">
+      <h1>Admin page</h1>
+      <h2>Add a theme</h2>
+      <div>
+        <div class="form">
+          <input v-model="themeName" placeholder="Name">
+          <p></p>
+          <input v-model="themeDescription" placeholder="Description">
+          <p></p>
+          <input v-model="color" placeholder="Hex of color">
+          <p></p>
+          <button @click="createTheme">Create</button>
+        </div>
       </div>
-    </div>
-    <h2>Edit/Delete a Theme</h2>
-    <div class="edit">
-      <div class="form">
-        <input v-model="findName" placeholder="Search">
-        <div class="suggestions" v-if="suggestions.length > 0">
-          <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectTheme(s)">{{s.name}}
+      <h2>Edit/Delete a Theme</h2>
+      <div class="edit">
+        <div class="form">
+          <input v-model="findName" placeholder="Search">
+          <div class="suggestions" v-if="suggestions.length > 0">
+            <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectTheme(s)">{{s.name}}
+            </div>
+          </div>
+          <div class="upload" v-if="findTheme">
+            <input v-model="findTheme.name">
+            <p></p>
+            <input v-model="findTheme.description">
+            <p></p>
+            <input v-model="findTheme.color">
           </div>
         </div>
-        <div class="upload" v-if="findTheme">
-          <input v-model="findTheme.name">
+        <div class="actions" v-if="findTheme">
+          <button @click="deleteTheme(findTheme)">Delete</button>
+          <button @click="editTheme(findTheme)">Edit</button>
+        </div>
+        <div v-if="findTheme">
+          <h2>Add a creation to {{findTheme.name}}</h2>
+          <div class="form">
+            <input v-model="creationName" placeholder="Name">
+            <p></p>
+            <input v-model="creationDescription" placeholder="Description">
+            <p></p>
+            <input v-model="instagramLink" placeholder="Link to instagram page">
+            <p></p>
+            <input type="file" name="photo" @change="fileChanged">
+            <p></p>
+            <button @click="createCreation">Create</button>
+          </div>
+        </div>
+        <h2>Edit/Delete a Creation</h2>
+        <input v-model="findCreationName" placeholder="Search">
+        <div class="suggestions" v-if="creationSuggestions.length > 0">
+          <div class="suggestion" v-for="s in creationSuggestions" :key="s.id" @click="selectCreation(s)">{{s.name}}
+          </div>
+        </div>
+        <div v-if="findCreation">
+          <input v-model="findCreation.name">
           <p></p>
-          <input v-model="findTheme.description">
+          <input v-model="findCreation.description">
           <p></p>
-          <input v-model="findTheme.color">
+          <input v-model="findCreation.instagramLink">
+        </div>
+        <div class="image-preview-div" v-if="findCreation">
+          <img class="img-fluid preview-image" :src="findCreation.photos[0]">
+        </div>
+        <div class="actions" v-if="findCreation">
+          <button @click="deleteCreation(findCreation)">Delete</button>
+          <button @click="editCreation(findCreation)">Edit</button>
         </div>
       </div>
-      <div class="actions" v-if="findTheme">
-        <button @click="deleteTheme(findTheme)">Delete</button>
-        <button @click="editTheme(findTheme)">Edit</button>
-      </div>
-      <div v-if="findTheme">
-        <h2>Add a creation to {{findTheme.name}}</h2>
-        <div class="form">
-          <input v-model="creationName" placeholder="Name">
-          <p></p>
-          <input v-model="creationDescription" placeholder="Description">
-          <p></p>
-          <input v-model="instagramLink" placeholder="Link to instagram page">
-          <p></p>
-          <input type="file" name="photo" @change="fileChanged">
-          <p></p>
-          <button @click="createCreation">Create</button>
-        </div>
-      </div>
-      <h2>Edit/Delete a Creation</h2>
-      <input v-model="findCreationName" placeholder="Search">
-      <div class="suggestions" v-if="creationSuggestions.length > 0">
-        <div class="suggestion" v-for="s in creationSuggestions" :key="s.id" @click="selectCreation(s)">{{s.name}}
-        </div>
-      </div>
-      <div v-if="findCreation">
-        <input v-model="findCreation.name">
-        <p></p>
-        <input v-model="findCreation.description">
-        <p></p>
-        <input v-model="findCreation.instagramLink">
-      </div>
-      <div class="image-preview-div" v-if="findCreation">
-        <img class="img-fluid preview-image" :src="findCreation.photos[0]">
-      </div>
-      <div class="actions" v-if="findCreation">
-        <button @click="deleteCreation(findCreation)">Delete</button>
-        <button @click="editCreation(findCreation)">Edit</button>
-      </div>
+    </div>
+    <div v-else>
+      <h2>You don't have admin permissions</h2>
     </div>
   </div>
 </template>
@@ -91,6 +96,10 @@
 img.preview-image {
   width: 50%;
   padding: 10px;
+}
+
+h2 {
+  padding-top: .5rem;
 }
 </style>
 

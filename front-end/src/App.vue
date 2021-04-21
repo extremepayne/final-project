@@ -19,7 +19,7 @@
             <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/other'}">
               <router-link class="nav-link" to="/other">Other</router-link>
             </b-nav-item>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/admin'}">
+            <b-nav-item v-if="this.$root.$data.user && this.$root.$data.user.role === 'admin'" v-bind:class="{ active: this.$router.history.current.path === '/admin'}">
               <router-link class="nav-link" to="/admin">Admin</router-link>
             </b-nav-item>
           </b-navbar-nav>
