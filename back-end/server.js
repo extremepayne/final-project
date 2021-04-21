@@ -60,6 +60,10 @@ const creationSchema = new mongoose.Schema({
 const Theme = mongoose.model('Theme', themeSchema);
 const Creation = mongoose.model('Creation', creationSchema);
 
+const users = require("./users.js");
+app.use("/api/users", users.routes);
+const validUser = users.valid;
+
 // Upload a photo. Uses the multer middleware for the upload and then returns
 // the path where the photo is stored in the file system.
 app.post('/api/photos', upload.single('photo'), async (req, res) => {
@@ -72,7 +76,7 @@ app.post('/api/photos', upload.single('photo'), async (req, res) => {
   });
 });
 
-app.post('/api/themes', async (req, res) => {
+app.post('/api/themes', validUser, async (req, res) => {
   const theme = new Theme({
     name: req.body.name,
     description: req.body.description,
@@ -101,7 +105,7 @@ app.get('/api/themes', async (req, res) => {
   }
 });
 
-app.put('/api/themes/:themeID', async (req, res) => {
+app.put('/api/themes/:themeID', validUser, async (req, res) => {
   try {
     if (req.user.role === "admin") {
       let theme = await Theme.findOne({_id:req.params.themeID});
@@ -123,7 +127,7 @@ app.put('/api/themes/:themeID', async (req, res) => {
   }
 });
 
-app.delete('/api/themes/:themeID', async (req, res) => {
+app.delete('/api/themes/:themeID', validUser, async (req, res) => {
   try {
     if (req.user.role === "admin") {
       let theme = await Theme.findOne({_id:req.params.themeID});
@@ -142,22 +146,26 @@ app.delete('/api/themes/:themeID', async (req, res) => {
   }
 });
 
-app.post('/api/themes/:themeID/creations', async (req, res) => {
+app.post('/api/themes/:themeID/creations', validUser, async (req, res) => {
   try {
-    let theme = await Theme.findOne({_id: req.params.themeID});
-    if (!theme){
-      res.sendStatus(404);
-      return;
+    if (req.user.role === "admin") {
+      let theme = await Theme.findOne({_id: req.params.themeID});
+      if (!theme){
+        res.sendStatus(404);
+        return;
+      }
+      let creation = new Creation({
+        theme: theme,
+        name: req.body.name,
+        description: req.body.description,
+        photos: req.body.photos,
+        instagramLink: req.body.instagramLink
+      });
+      await creation.save();
+      res.send(creation);
+    } else {
+      res.sendStatus(403);
     }
-    let creation = new Creation({
-      theme: theme,
-      name: req.body.name,
-      description: req.body.description,
-      photos: req.body.photos,
-      instagramLink: req.body.instagramLink
-    });
-    await creation.save();
-    res.send(creation);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -189,40 +197,46 @@ app.get('/api/creations', async (req, res) => {
   }
 });
 
-app.put('/api/themes/:themeID/creations/:creationID', async (req, res) => {
+app.put('/api/themes/:themeID/creations/:creationID', validUser, async (req, res) => {
   try {
-    let creation = await Creation.findOne({_id: req.params.creationID});
-    if (!creation) {
-      res.send(404);
-      return;
+    if (req.user.role === "admin") {
+      let creation = await Creation.findOne({_id: req.params.creationID});
+      if (!creation) {
+        res.send(404);
+        return;
+      }
+      creation.name = req.body.name;
+      creation.description = req.body.description;
+      creation.instagramLink = req.body.instagramLink;
+      await creation.save();
+      res.send(creation);
+    } else {
+      res.sendStatus(403);
     }
-    creation.name = req.body.name;
-    creation.description = req.body.description;
-    creation.instagramLink = req.body.instagramLink;
-    await creation.save();
-    res.send(creation);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 });
 
-app.delete('/api/themes/:themeID/creations/:creationID', async (req, res) => {
+app.delete('/api/themes/:themeID/creations/:creationID', validUser, async (req, res) => {
   try {
-    let creation = await Creation.findOne({_id: req.params.creationID});
-    if (!creation) {
-      res.send(404);
-      return;
+    if (req.user.role === "admin") {
+      let creation = await Creation.findOne({_id: req.params.creationID});
+      if (!creation) {
+        res.send(404);
+        return;
+      }
+      await creation.delete();
+      res.sendStatus(200);
+
+    } else {
+      res.sendStatus(403);
     }
-    await creation.delete();
-    res.sendStatus(200);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 });
-
-const users = require("./users.js");
-app.use("/api/users", users.routes);
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));

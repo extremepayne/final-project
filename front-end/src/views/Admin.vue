@@ -116,9 +116,15 @@ export default {
       file: null,
     }
   },
-  created() {
+  async created() {
     this.getThemes();
     this.getCreations();
+    try {
+      let response = await axios.get('/api/users');
+      this.$root.$data.user = response.data.user;
+    } catch (error) {
+      this.$root.$data.user = null;
+    }
   },
   computed: {
     suggestions() {
@@ -128,7 +134,10 @@ export default {
     creationSuggestions() {
       let creations = this.creations.filter(creation => creation.name.toLowerCase().startsWith(this.findCreationName.toLowerCase()));
       return creations.sort((a, b) => a.name > b.name);
-    }
+    },
+    user() {
+      return this.$root.$data.user;
+    },
   },
   methods: {
     async createTheme() {
