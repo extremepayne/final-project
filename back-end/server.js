@@ -79,8 +79,12 @@ app.post('/api/themes', async (req, res) => {
     color: req.body.color
   });
   try{
-    await theme.save();
-    res.send(theme);
+    if (req.user.role === "admin") {
+      await theme.save();
+      res.send(theme);
+    } else {
+      res.sendStatus(403);
+    }
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -99,16 +103,20 @@ app.get('/api/themes', async (req, res) => {
 
 app.put('/api/themes/:themeID', async (req, res) => {
   try {
-    let theme = await Theme.findOne({_id:req.params.themeID});
-    if (!theme) {
-      res.send(404);
-      return;
+    if (req.user.role === "admin") {
+      let theme = await Theme.findOne({_id:req.params.themeID});
+      if (!theme) {
+        res.send(404);
+        return;
+      }
+      theme.name = req.body.name;
+      theme.description = req.body.description;
+      theme.color = req.body.color;
+      await theme.save();
+      res.send(theme);
+    } else {
+      res.sendStatus(403);
     }
-    theme.name = req.body.name;
-    theme.description = req.body.description;
-    theme.color = req.body.color;
-    await theme.save();
-    res.send(theme);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -117,13 +125,17 @@ app.put('/api/themes/:themeID', async (req, res) => {
 
 app.delete('/api/themes/:themeID', async (req, res) => {
   try {
-    let theme = await Theme.findOne({_id:req.params.themeID});
-    if (!theme) {
-      res.send(404);
-      return;
+    if (req.user.role === "admin") {
+      let theme = await Theme.findOne({_id:req.params.themeID});
+      if (!theme) {
+        res.send(404);
+        return;
+      }
+      await theme.delete();
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(403);
     }
-    await theme.delete();
-    res.sendStatus(200);
   } catch (error) {
     console.lo(error);
     res.sendStatus(500);

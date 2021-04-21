@@ -60,7 +60,7 @@ userSchema.methods.toJSON = function() {
 // create a User model from the User schema
 const User = mongoose.model('User', userSchema);
 
-const validUser = async (req, res) => {
+const validUser = async (req, res, next) => {
   if (!req.session.userID){
     return res.status(403).send({ message: "not logged in" });
   }
@@ -75,6 +75,8 @@ const validUser = async (req, res) => {
   } catch (error) {
     return res.status(403).send({ message: "not logged in" });
   }
+
+  next();
 };
 
 /* API Endpoints */
@@ -119,7 +121,7 @@ router.post("/login", async (req, res) => {
         message: "username or password is incorrect"
       });
     }
-
+    req.session.userID = user._id;
     return res.send({user: user});
   } catch (error){
     console.log(error);
@@ -153,3 +155,4 @@ module.exports = {
   model: User,
   valid: validUser
 }
+

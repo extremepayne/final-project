@@ -7,20 +7,28 @@
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/'}">
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/'}">
               <router-link class="nav-link" to="/">Home</router-link>
             </b-nav-item>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/stormlight'}">
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/stormlight'}">
               <router-link class="nav-link" to="/stormlight">Stormlight</router-link>
             </b-nav-item>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/starwars'}">
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/starwars'}">
               <router-link class="nav-link" to="/starwars">Star Wars</router-link>
             </b-nav-item>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/other'}">
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/other'}">
               <router-link class="nav-link" to="/other">Other</router-link>
             </b-nav-item>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path == '/admin'}">
+            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/admin'}">
               <router-link class="nav-link" to="/admin">Admin</router-link>
+            </b-nav-item>
+          </b-navbar-nav>
+          <b-navbar-nav class="ml-auto">
+            <b-nav-item v-if="this.$root.$data.user" v-bind:class="{ active: this.$router.history.current.path === '/dashboard'}">
+              <router-link class="nav-link" to="/dashboard">{{this.$root.$data.user.username}}</router-link>
+            </b-nav-item>
+            <b-nav-item v-else v-bind:class="{ active: this.$router.history.current.path === '/dashboard'}">
+              <router-link class="nav-link" to="/dashboard">Log in or sign up</router-link>
             </b-nav-item>
           </b-navbar-nav>
         </b-collapse>
