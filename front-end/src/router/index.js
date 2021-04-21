@@ -6,6 +6,7 @@ import Stormlight from "../views/Stormlight.vue";
 import StarWars from "../views/StarWars.vue";
 import Other from "../views/Other.vue";
 import Dashboard from "../views/Dashboard.vue";
+import Comments from "../views/Comments.vue";
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+  },
+  {
+    path: "/comments",
+    name: "Comments",
+    component: Comments,
   },
 ];
 

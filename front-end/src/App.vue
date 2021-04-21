@@ -7,27 +7,30 @@
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/'}">
+            <b-nav-item>
               <router-link class="nav-link" to="/">Home</router-link>
             </b-nav-item>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/stormlight'}">
+            <b-nav-item>
               <router-link class="nav-link" to="/stormlight">Stormlight</router-link>
             </b-nav-item>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/starwars'}">
+            <b-nav-item>
               <router-link class="nav-link" to="/starwars">Star Wars</router-link>
             </b-nav-item>
-            <b-nav-item v-bind:class="{ active: this.$router.history.current.path === '/other'}">
+            <b-nav-item>
               <router-link class="nav-link" to="/other">Other</router-link>
             </b-nav-item>
-            <b-nav-item v-if="this.$root.$data.user && this.$root.$data.user.role === 'admin'" v-bind:class="{ active: this.$router.history.current.path === '/admin'}">
+            <b-nav-item>
+              <router-link class="nav-link" to="/comments">Comments</router-link>
+            </b-nav-item>
+            <b-nav-item v-if="this.$root.$data.user && this.$root.$data.user.role === 'admin'">
               <router-link class="nav-link" to="/admin">Admin</router-link>
             </b-nav-item>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
-            <b-nav-item v-if="this.$root.$data.user" v-bind:class="{ active: this.$router.history.current.path === '/dashboard'}">
+            <b-nav-item v-if="this.$root.$data.user">
               <router-link class="nav-link" to="/dashboard">{{this.$root.$data.user.username}}</router-link>
             </b-nav-item>
-            <b-nav-item v-else v-bind:class="{ active: this.$router.history.current.path === '/dashboard'}">
+            <b-nav-item v-else>
               <router-link class="nav-link" to="/dashboard">Log in or sign up</router-link>
             </b-nav-item>
           </b-navbar-nav>
@@ -76,13 +79,13 @@ nav {
   padding: 30px;
 }
 
-#nav a {
+.navbar a {
   font-weight: bold;
   color: #2c3e50;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.navbar a.router-link-exact-active {
+  color: #eee !important;
 }
 
 /* Sticky footer styles

@@ -60,9 +60,13 @@ const creationSchema = new mongoose.Schema({
 const Theme = mongoose.model('Theme', themeSchema);
 const Creation = mongoose.model('Creation', creationSchema);
 
+// import other routers
 const users = require("./users.js");
 app.use("/api/users", users.routes);
 const validUser = users.valid;
+
+const comments = require("./comments.js");
+app.use("/api/comments", comments.routes);
 
 // Upload a photo. Uses the multer middleware for the upload and then returns
 // the path where the photo is stored in the file system.

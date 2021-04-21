@@ -82,6 +82,10 @@ export default {
 .error {
   background-color: #e01923;
   color: #fff;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
 }
 button {
   margin: .5rem;
